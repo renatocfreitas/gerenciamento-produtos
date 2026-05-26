@@ -1,0 +1,37 @@
+### 1. Tentar listar produtos sem estar logado (Deve retornar 401 Unauthorized)
+GET http://localhost:8080/produtos
+Accept: application/json
+
+###
+
+### 2. Realizar Login com o Usuário Comum
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@loja.com",
+  "senha": "user123"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###
+
+### 3. Listar Produtos usando o Token obtido (Deve retornar 200 OK)
+GET http://localhost:8080/produtos
+Authorization: Bearer {{auth_token}}
+Accept: application/json
+
+###
+
+### 4. Tentar criar um produto como USER comum (Deve retornar 403 Forbidden)
+POST http://localhost:8080/produtos
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "nome": "Teclado Mecânico",
+  "descricao": "Teclado RGB Switch Blue",
+  "preco": 249.90,
+  "estoque": 15
+}
